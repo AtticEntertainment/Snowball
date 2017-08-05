@@ -113,6 +113,7 @@ namespace Snowball
             {
                 moveCommand = -1.0f;
             }
+
             else if (keyboardState.IsKeyDown(Keys.Right) ||
                      keyboardState.IsKeyDown(Keys.D))
             {
@@ -127,6 +128,20 @@ namespace Snowball
 
 
 
+        }
+
+        public void Update(
+    GameTime gameTime,
+    KeyboardState keyboardState,
+    GamePadState gamePadState)
+        {
+            GetInput(keyboardState, gamePadState);
+
+            ApplyPhysics(gameTime);
+
+            // Clear input commands.
+            moveCommand = 0.0f;
+            isJumping = false;
         }
 
 
@@ -195,7 +210,16 @@ namespace Snowball
 
         }
 
-        
+        //Reset killcount and stat multiplier on player death
+        public void OnDeath()
+        {
+            killCounter = 0;
+            statMulti = 1.0f;
+            isAlive = false;
+        }
+
+
+
 
 
     }
