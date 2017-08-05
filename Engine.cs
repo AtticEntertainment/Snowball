@@ -7,14 +7,14 @@ namespace Snowball
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    public partial class Engine : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Texture2D logo;
 
 
-        public Game1()
+        public Engine()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
