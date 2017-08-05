@@ -75,6 +75,12 @@ namespace Snowball
                 }
             }
         }
+
+        public List<string> GetKeyPressed(Buttons btn)
+        {
+            reverseMap.TryGetValue(btn, out List<string> ret);
+            return ret;
+        }
     }
 
     public class KeyMap
