@@ -76,7 +76,39 @@ namespace Snowball
             }
         }
 
-        public List<string> GetKeyPressed(Buttons btn)
+        public List<Buttons> CheckButtonsPressed(GamePadState oldState)
+        {
+            GamePadState newState = GamePad.GetState(PlayerIndex.One);
+            List<Buttons> ret = new List<Buttons>();
+            foreach(Buttons btn in reverseMap.Keys)
+            {
+                if (newState.IsButtonDown(btn) && oldState.IsButtonUp(btn))
+                    ret.Add(btn);
+            }
+
+            return ret;
+        }
+
+        public List<Buttons> CheckButtonsReleased(GamePadState oldState)
+        {
+            GamePadState newState = GamePad.GetState(PlayerIndex.One);
+            List<Buttons> ret = new List<Buttons>();
+            foreach (Buttons btn in reverseMap.Keys)
+            {
+                if (newState.IsButtonUp(btn) && oldState.IsButtonDown(btn))
+                    ret.Add(btn);
+            }
+
+            return ret;
+        }
+
+
+        /// <summary>
+        /// Called after you check if a button has been pressed. Gets a list of actions associated with the button that was pressed.
+        /// </summary>
+        /// <param name="btn"></param>
+        /// <returns></returns>
+        public List<string> GetButtonPressed(Buttons btn)
         {
             reverseMap.TryGetValue(btn, out List<string> ret);
             return ret;
@@ -145,6 +177,37 @@ namespace Snowball
             }
         }
 
+        public List<Keys> CheckKeysPressed(KeyboardState oldState)
+        {
+            KeyboardState newState = Keyboard.GetState();
+            List<Keys> ret = new List<Keys>();
+            foreach (Keys key in reverseMap.Keys)
+            {
+                if (newState.IsKeyDown(key) && oldState.IsKeyUp(key))
+                    ret.Add(key);
+            }
+
+            return ret;
+        }
+
+        public List<Keys> CheckKeysReleased(KeyboardState oldState)
+        {
+            KeyboardState newState = Keyboard.GetState();
+            List<Keys> ret = new List<Keys>();
+            foreach (Keys key in reverseMap.Keys)
+            {
+                if (newState.IsKeyUp(key) && oldState.IsKeyDown(key))
+                    ret.Add(key);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Called after you check if a key has been pressed. Gets related action for further logic.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public string GetKeyPressed(Keys key)
         {
             reverseMap.TryGetValue(key, out string ret);
