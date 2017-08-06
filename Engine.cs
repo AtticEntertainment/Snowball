@@ -55,6 +55,8 @@ namespace Snowball
             font = Content.Load<SpriteFont>("Fonts/Font1");
             Width = graphics.PreferredBackBufferWidth;
             Height = graphics.PreferredBackBufferHeight;
+            _play = new PlayScreen();
+            _start = new StartScreen();
             // TODO: use this.Content to load your game content here
         }
 

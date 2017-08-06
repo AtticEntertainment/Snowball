@@ -11,8 +11,8 @@ namespace Snowball
 {
     public partial class Engine : Game
     {
-        public static PlayScreen _play = new PlayScreen();
-        public static StartScreen _start = new StartScreen();
+        public static PlayScreen _play;// = new PlayScreen();
+        public static StartScreen _start;// = new StartScreen();
         private Stack<GameScreen> _screens = new Stack<GameScreen>();//Use a Tree instead? If using a Tree, store the entire Hierarchy indefinitely, and keep track of current branch.
         public GameScreen CurrentScreen
         {
@@ -66,22 +66,52 @@ namespace Snowball
         private bool fallDamageEnabled = false;
         private float terminal = 50.0f; //TODO: How fast do you need to be going to accrue fall damage?
         private int fallDamage = 2; //TODO: How much damage do you take from Fall Damage? Could be multiplied if you fell faster.
+        private Vector2 loc;
 
-        public PlayScreen() : base() {} //Call GameScreen() to set Old State variables.
+        public PlayScreen() : base() {
+            loc = new Vector2(Engine.Width / 2 - 16, Engine.Height / 2 - 16);
+        } //Call GameScreen() to set Old State variables.
 
         public override void Update(GameTime gt)
         {
+            //Console.WriteLine(loc);
             base.Update(gt);
             //throw new NotImplementedException();
         }
 
         public override void Draw(GameTime gt, SpriteBatch sb, SpriteFont font)
         {
+            if(loc == null) loc = new Vector2(Engine.Width / 2 - 16, Engine.Height / 2 - 16);
+            Texture2D rect = new Texture2D(sb.GraphicsDevice, 1, 1);
+            rect.SetData(new[] { Color.DarkRed });
+            sb.Draw(rect, new Rectangle((int)loc.X, (int)loc.Y, 32, 32), Color.DarkRed);
             //throw new NotImplementedException();
         }
 
         public override void KeyPressed(KeyboardState key)
         {
+            foreach(Keys k in ctrlMap.CheckKeysPressed(oldKey, key)) //Check keys just pressed.
+            {
+
+            }
+
+            foreach(Keys k in ctrlMap.CheckKeysHeld(oldKey, key)) //Check keys being held.
+            {
+                List<string> ky = ctrlMap.GetControlPressed(k);
+                if (ky.Contains("Up")) loc.Y--;
+                else if (ky.Contains("Down")) loc.Y++;
+                else if (ky.Contains("Left")) loc.X--;
+                else if (ky.Contains("Right")) loc.X++;
+            }
+
+            foreach(Keys k in ctrlMap.CheckKeysReleased(oldKey, key)) //Check keys just released.
+            {
+                List<string> ky = ctrlMap.GetControlPressed(k);
+                if (ky.Contains("Up")) loc.Y--;
+                else if (ky.Contains("Down")) loc.Y++;
+                else if (ky.Contains("Left")) loc.X--;
+                else if (ky.Contains("Right")) loc.X++;
+            }
 
             oldKey = key;
             //throw new NotImplementedException();
@@ -96,6 +126,20 @@ namespace Snowball
 
         public override void ButtonPressed(GamePadState pad)
         {
+            foreach(Buttons b in ctrlMap.CheckButtonsPressed(oldPad, pad)) //Check buttons just pressed.
+            {
+
+            }
+
+            foreach(Buttons b in ctrlMap.CheckButtonsHeld(oldPad, pad)) //Check buttons being held.
+            {
+
+            }
+
+            foreach(Buttons b in ctrlMap.CheckButtonsReleased(oldPad, pad)) //Check buttons just released.
+            {
+
+            }
 
             oldPad = pad;
             //throw new NotImplementedException();
@@ -133,6 +177,7 @@ namespace Snowball
                 {
                     if(Selected == "Start")
                     {
+                        Engine.GetInstance().CurrentScreen = Engine._play;
                         //Switch to PlayScreen;
                     }
                     else if(Selected == "Load")
@@ -184,6 +229,7 @@ namespace Snowball
                 {
                     if (Selected == "Start")
                     {
+                        Engine.GetInstance().CurrentScreen = Engine._play;
                         //Switch to PlayScreen;
                     }
                     else if (Selected == "Load")
