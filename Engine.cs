@@ -13,6 +13,8 @@ namespace Snowball
         SpriteBatch spriteBatch;
         private Texture2D logo;
         private SpriteFont font;
+        public static int Width;
+        public static int Height;
 
         public Engine()
         {
@@ -43,7 +45,8 @@ namespace Snowball
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // pc = Content.Load<Texture2D>("Images/Pc/..."); will load player character sprite when obtained
             font = Content.Load<SpriteFont>("Fonts/Font1");
-
+            Width = graphics.PreferredBackBufferWidth;
+            Height = graphics.PreferredBackBufferHeight;
             // TODO: use this.Content to load your game content here
         }
 

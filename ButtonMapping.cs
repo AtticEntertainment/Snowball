@@ -31,7 +31,7 @@ namespace Snowball
             CreateReverseMap();
         }
 
-        public ButtonMap GetInstance()
+        public static ButtonMap GetInstance()
         {
             if (_btnMap == null)
                 _btnMap = new ButtonMap();
@@ -46,12 +46,18 @@ namespace Snowball
             reverseMap = new Dictionary<Buttons, List<string>>();
             foreach (KeyValuePair<string, List<Buttons>> btn in mapping)
             {
+                Console.WriteLine(btn);
                 foreach (Buttons b in btn.Value)
                 {
-                    if (reverseMap == null || reverseMap.Count < 1)
-                        reverseMap[b] = new List<string> { btn.Key };
-                    else
+                    Console.WriteLine(b);
+                    if(reverseMap.ContainsKey(b))
+                    {
                         reverseMap[b].Add(btn.Key);
+                    }
+                    else
+                    {
+                        reverseMap[b] = new List<string> { btn.Key };
+                    }
                 }
             }
         }
@@ -76,9 +82,8 @@ namespace Snowball
             }
         }
 
-        public List<Buttons> CheckButtonsPressed(GamePadState oldState)
+        public List<Buttons> CheckButtonsPressed(GamePadState oldState, GamePadState newState)
         {
-            GamePadState newState = GamePad.GetState(PlayerIndex.One);
             List<Buttons> ret = new List<Buttons>();
             foreach(Buttons btn in reverseMap.Keys)
             {
@@ -89,9 +94,8 @@ namespace Snowball
             return ret;
         }
 
-        public List<Buttons> CheckButtonsReleased(GamePadState oldState)
+        public List<Buttons> CheckButtonsReleased(GamePadState oldState, GamePadState newState)
         {
-            GamePadState newState = GamePad.GetState(PlayerIndex.One);
             List<Buttons> ret = new List<Buttons>();
             foreach (Buttons btn in reverseMap.Keys)
             {
@@ -132,7 +136,7 @@ namespace Snowball
             mapping["Back"] = new List<Keys> { Keys.Escape };
             CreateReverseMap();
         }
-        public KeyMap GetInstance()
+        public static KeyMap GetInstance()
         {
             if (_keyMap == null)
                 _keyMap = new KeyMap();
@@ -177,9 +181,8 @@ namespace Snowball
             }
         }
 
-        public List<Keys> CheckKeysPressed(KeyboardState oldState)
+        public List<Keys> CheckKeysPressed(KeyboardState oldState, KeyboardState newState)
         {
-            KeyboardState newState = Keyboard.GetState();
             List<Keys> ret = new List<Keys>();
             foreach (Keys key in reverseMap.Keys)
             {
@@ -190,9 +193,8 @@ namespace Snowball
             return ret;
         }
 
-        public List<Keys> CheckKeysReleased(KeyboardState oldState)
+        public List<Keys> CheckKeysReleased(KeyboardState oldState, KeyboardState newState)
         {
-            KeyboardState newState = Keyboard.GetState();
             List<Keys> ret = new List<Keys>();
             foreach (Keys key in reverseMap.Keys)
             {
