@@ -14,7 +14,7 @@ namespace Snowball
         [STAThread]
         static void Main()
         {
-            using (var game = new Engine())
+            using (var game = Engine.GetInstance())
                 game.Run();
         }
     }

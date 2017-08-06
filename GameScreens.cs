@@ -49,7 +49,12 @@ namespace Snowball
             this.oldPad = GamePad.GetState(PlayerIndex.One);
         }
 
-        public abstract void Update(GameTime gt);
+        public virtual void Update(GameTime gt)
+        {
+            KeyPressed(Keyboard.GetState());
+            MousePressed(Mouse.GetState());
+            ButtonPressed(GamePad.GetState(PlayerIndex.One));
+        }
         public abstract void Draw(GameTime gt, SpriteBatch sb, SpriteFont font);
         public abstract void KeyPressed(KeyboardState key);
         public abstract void ButtonPressed(GamePadState pad);
@@ -67,6 +72,7 @@ namespace Snowball
 
         public override void Update(GameTime gt)
         {
+            base.Update(gt);
             //throw new NotImplementedException();
         }
 
@@ -77,16 +83,22 @@ namespace Snowball
 
         public override void KeyPressed(KeyboardState key)
         {
+
+            oldKey = key;
             //throw new NotImplementedException();
         }
 
         public override void MousePressed(MouseState mouse)
         {
+
+            oldMouse = mouse;
             //throw new NotImplementedException();
         }
 
         public override void ButtonPressed(GamePadState pad)
         {
+
+            oldPad = pad;
             //throw new NotImplementedException();
         }
     }
@@ -115,8 +127,28 @@ namespace Snowball
 
             foreach (Buttons b in btnMap.CheckButtonsReleased(oldPad, pad)) //Check Buttons Recently Released.
             {
-                if (btnMap.GetButtonPressed(b).Contains("Up")) _sel--;
-                else if (btnMap.GetButtonPressed(b).Contains("Down")) _sel++;
+                List<string> pressed = btnMap.GetButtonPressed(b);
+                if (pressed.Contains("Up")) _sel--;
+                else if (pressed.Contains("Down")) _sel++;
+                else if(pressed.Contains("Confirm"))
+                {
+                    if(Selected == "Start")
+                    {
+                        //Switch to PlayScreen;
+                    }
+                    else if(Selected == "Load")
+                    {
+                        //Switch to DataScreen;
+                    }
+                    else if(Selected == "Options")
+                    {
+                        //Switch to OptionsScreen;
+                    }
+                    else if(Selected == "Quit")
+                    {
+                        Engine.GetInstance().Exit();
+                    }
+                }
             }
 
             oldPad = pad;
@@ -146,8 +178,28 @@ namespace Snowball
 
             foreach(Keys k in keyMap.CheckKeysReleased(oldKey, key)) //Check which keys were just released.
             {
-                if (keyMap.GetKeyPressed(k) == "Up") _sel--;
-                else if (keyMap.GetKeyPressed(k) == "Down") _sel++;
+                string ky = keyMap.GetKeyPressed(k);
+                if (ky == "Up") _sel--;
+                else if (ky == "Down") _sel++;
+                else if (ky == "Confirm")
+                {
+                    if (Selected == "Start")
+                    {
+                        //Switch to PlayScreen;
+                    }
+                    else if (Selected == "Load")
+                    {
+                        //Switch to DataScreen;
+                    }
+                    else if (Selected == "Options")
+                    {
+                        //Switch to OptionsScreen;
+                    }
+                    else if (Selected == "Quit")
+                    {
+                        Engine.GetInstance().Exit();
+                    }
+                }
             }
 
             oldKey = key;
@@ -156,14 +208,14 @@ namespace Snowball
 
         public override void MousePressed(MouseState mouse)
         {
+
+            oldMouse = mouse;
             //throw new NotImplementedException();
         }
 
         public override void Update(GameTime gt)
         {
-            KeyPressed(Keyboard.GetState());
-            MousePressed(Mouse.GetState());
-            ButtonPressed(GamePad.GetState(PlayerIndex.One));
+            base.Update(gt);
             //throw new NotImplementedException();
         }
     }

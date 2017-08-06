@@ -15,11 +15,19 @@ namespace Snowball
         private SpriteFont font;
         public static int Width;
         public static int Height;
+        private static Engine _eng;
 
-        public Engine()
+        private Engine()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+        }
+
+        public static Engine GetInstance()
+        {
+            if (_eng == null)
+                _eng = new Engine();
+            return _eng;
         }
 
         /// <summary>
