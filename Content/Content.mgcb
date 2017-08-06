@@ -25,3 +25,9 @@
 /processorParam:TextureFormat=Color
 /build:Images/Credits/GamerGraceLogo.png
 
+#begin Fonts/Font1.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Font1.spritefont
+

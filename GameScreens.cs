@@ -36,8 +36,16 @@ namespace Snowball
 
     public abstract class GameScreen
     {
-        private KeyboardState oldKey;
-        private MouseState oldMouse;
+        internal KeyboardState oldKey;
+        internal MouseState oldMouse;
+        internal GamePadState oldPad;
+
+        internal GameScreen()
+        {
+            this.oldKey = Keyboard.GetState();
+            this.oldMouse = Mouse.GetState();
+            this.oldPad = GamePad.GetState(PlayerIndex.One);
+        }
 
         public abstract void Update(GameTime gt);
         public abstract void Draw(GameTime gt, SpriteBatch sb, SpriteFont font);
@@ -53,57 +61,61 @@ namespace Snowball
         private float terminal = 50.0f; //TODO: How fast do you need to be going to accrue fall damage?
         private int fallDamage = 2; //TODO: How much damage do you take from Fall Damage? Could be multiplied if you fell faster.
 
+        public PlayScreen() : base() {} //Call GameScreen() to set Old State variables.
+
         public override void Update(GameTime gt)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public override void Draw(GameTime gt, SpriteBatch sb, SpriteFont font)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public override void KeyPressed(KeyboardState key)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public override void MousePressed(MouseState mouse)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public override void ButtonPressed(GamePadState pad)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 
     public class StartScreen : GameScreen
     {
+        public StartScreen() : base() { }//Set Old States.
+
         public override void ButtonPressed(GamePadState pad)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public override void Draw(GameTime gt, SpriteBatch sb, SpriteFont font)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public override void KeyPressed(KeyboardState key)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public override void MousePressed(MouseState mouse)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public override void Update(GameTime gt)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }
