@@ -39,8 +39,7 @@ namespace Snowball
         internal KeyboardState oldKey;
         internal MouseState oldMouse;
         internal GamePadState oldPad;
-        internal static KeyMap keyMap = KeyMap.GetInstance();
-        internal static ButtonMap btnMap = ButtonMap.GetInstance();
+        internal static ControlsMap ctrlMap = ControlsMap.GetInstance();
 
         internal GameScreen()
         {
@@ -120,14 +119,14 @@ namespace Snowball
 
         public override void ButtonPressed(GamePadState pad)
         {
-            foreach (Buttons b in btnMap.CheckButtonsPressed(oldPad, pad)) //Check Buttons Just Pressed.
+            foreach (Buttons b in ctrlMap.CheckButtonsPressed(oldPad, pad)) //Check Buttons Just Pressed.
             {
 
             }
 
-            foreach (Buttons b in btnMap.CheckButtonsReleased(oldPad, pad)) //Check Buttons Recently Released.
+            foreach (Buttons b in ctrlMap.CheckButtonsReleased(oldPad, pad)) //Check Buttons Recently Released.
             {
-                List<string> pressed = btnMap.GetButtonPressed(b);
+                List<string> pressed = ctrlMap.GetControlPressed(b);
                 if (pressed.Contains("Up")) _sel--;
                 else if (pressed.Contains("Down")) _sel++;
                 else if(pressed.Contains("Confirm"))
@@ -171,17 +170,17 @@ namespace Snowball
 
         public override void KeyPressed(KeyboardState key)
         {
-            foreach(Keys k in keyMap.CheckKeysPressed(oldKey, key)) //Check which keys were just pressed.
+            foreach(Keys k in ctrlMap.CheckKeysPressed(oldKey, key)) //Check which keys were just pressed.
             {
 
             }
 
-            foreach(Keys k in keyMap.CheckKeysReleased(oldKey, key)) //Check which keys were just released.
+            foreach(Keys k in ctrlMap.CheckKeysReleased(oldKey, key)) //Check which keys were just released.
             {
-                string ky = keyMap.GetKeyPressed(k);
-                if (ky == "Up") _sel--;
-                else if (ky == "Down") _sel++;
-                else if (ky == "Confirm")
+                List<string> ky = ctrlMap.GetControlPressed(k);
+                if (ky.Contains("Up")) _sel--;
+                else if (ky.Contains("Down")) _sel++;
+                else if (ky.Contains("Confirm"))
                 {
                     if (Selected == "Start")
                     {

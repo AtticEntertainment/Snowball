@@ -46,10 +46,8 @@ namespace Snowball
             reverseMap = new Dictionary<Buttons, List<string>>();
             foreach (KeyValuePair<string, List<Buttons>> btn in mapping)
             {
-                Console.WriteLine(btn);
                 foreach (Buttons b in btn.Value)
                 {
-                    Console.WriteLine(b);
                     if(reverseMap.ContainsKey(b))
                     {
                         reverseMap[b].Add(btn.Key);
@@ -269,6 +267,188 @@ namespace Snowball
         public string GetKeyPressed(Keys key)
         {
             reverseMap.TryGetValue(key, out string ret);
+            return ret;
+        }
+    }
+
+    public class ControlsMap
+    {
+        private static ControlsMap _ctrl;
+        private Dictionary<string, List<Enum>> mapping;
+        private Dictionary<Enum, List<string>> reverseMap;
+
+        private ControlsMap()
+        {
+            mapping = new Dictionary<string, List<Enum>>();
+            mapping["Up"] = new List<Enum> { Keys.Up, Keys.W, Buttons.DPadUp, Buttons.LeftThumbstickUp };
+            mapping["Down"] = new List<Enum> { Keys.Down, Keys.S, Buttons.DPadDown, Buttons.LeftThumbstickDown };
+            mapping["Left"] = new List<Enum> { Keys.Left, Keys.A, Buttons.DPadLeft, Buttons.LeftThumbstickLeft };
+            mapping["Right"] = new List<Enum> { Keys.Right, Keys.D, Buttons.DPadRight, Buttons.LeftThumbstickRight };
+            mapping["Confirm"] = new List<Enum> { Keys.Enter, Buttons.A };
+            mapping["Cancel"] = new List<Enum> { Keys.Escape, Buttons.B };
+            CreateReverseMap();
+        }
+
+        public static ControlsMap GetInstance()
+        {
+            if (_ctrl == null) _ctrl = new ControlsMap();
+            return _ctrl;
+        }
+
+        /// <summary>
+        /// Used for mapping actions to controls.
+        /// </summary>
+        private void CreateReverseMap()
+        {
+            reverseMap = new Dictionary<Enum, List<string>>();
+            foreach (KeyValuePair<string, List<Enum>> ctrl in mapping)
+            {
+                foreach (Enum c in ctrl.Value)
+                {
+                    if (reverseMap.ContainsKey(c))
+                    {
+                        reverseMap[c].Add(ctrl.Key);
+                    }
+                    else
+                    {
+                        reverseMap[c] = new List<string> { ctrl.Key };
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Used for creating the Mapping from the Reverse Mapping.
+        /// </summary>
+        private void CreateMap()
+        {
+            if (reverseMap == null || reverseMap.Count < 1)
+                return;
+            mapping = new Dictionary<string, List<Enum>>();
+            foreach (KeyValuePair<Enum, List<string>> ctrl in reverseMap)
+            {
+                foreach (string c in ctrl.Value)
+                {
+                    if (mapping.ContainsKey(c))
+                        mapping[c].Add(ctrl.Key);
+                    else
+                        mapping[c] = new List<Enum> { ctrl.Key };
+                }
+            }
+        }
+
+        /// <summary>
+        /// Check which keys were just pressed.
+        /// </summary>
+        /// <param name="oldState"></param>
+        /// <param name="newState"></param>
+        /// <returns></returns>
+        public List<Keys> CheckKeysPressed(KeyboardState oldState, KeyboardState newState)
+        {
+            List<Keys> ret = new List<Keys>();
+            foreach (Keys key in reverseMap.Keys)
+            {
+                if (newState.IsKeyDown(key) && oldState.IsKeyUp(key))
+                    ret.Add(key);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Check which keys were just released.
+        /// </summary>
+        /// <param name="oldState"></param>
+        /// <param name="newState"></param>
+        /// <returns></returns>
+        public List<Keys> CheckKeysReleased(KeyboardState oldState, KeyboardState newState)
+        {
+            List<Keys> ret = new List<Keys>();
+            foreach (Keys key in reverseMap.Keys)
+            {
+                if (newState.IsKeyUp(key) && oldState.IsKeyDown(key))
+                    ret.Add(key);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Check which keys are being held.
+        /// </summary>
+        /// <param name="oldState"></param>
+        /// <param name="newState"></param>
+        /// <returns></returns>
+        public List<Keys> CheckKeysHeld(KeyboardState oldState, KeyboardState newState)
+        {
+            List<Keys> ret = new List<Keys>();
+            foreach (Keys key in reverseMap.Keys)
+            {
+                if (newState.IsKeyDown(key) && oldState.IsKeyDown(key)) ret.Add(key);
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// Check which buttons were just pressed.
+        /// </summary>
+        /// <param name="oldState"></param>
+        /// <param name="newState"></param>
+        /// <returns></returns>
+        public List<Buttons> CheckButtonsPressed(GamePadState oldState, GamePadState newState)
+        {
+            List<Buttons> ret = new List<Buttons>();
+            foreach (Buttons btn in reverseMap.Keys)
+            {
+                if (newState.IsButtonDown(btn) && oldState.IsButtonUp(btn))
+                    ret.Add(btn);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Check which buttons were just released.
+        /// </summary>
+        /// <param name="oldState"></param>
+        /// <param name="newState"></param>
+        /// <returns></returns>
+        public List<Buttons> CheckButtonsReleased(GamePadState oldState, GamePadState newState)
+        {
+            List<Buttons> ret = new List<Buttons>();
+            foreach (Buttons btn in reverseMap.Keys)
+            {
+                if (newState.IsButtonUp(btn) && oldState.IsButtonDown(btn))
+                    ret.Add(btn);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Check which buttons are being held.
+        /// </summary>
+        /// <param name="oldState"></param>
+        /// <param name="newState"></param>
+        /// <returns></returns>
+        public List<Buttons> CheckButtonsHeld(GamePadState oldState, GamePadState newState)
+        {
+            List<Buttons> ret = new List<Buttons>();
+            foreach (Buttons btn in reverseMap.Keys)
+            {
+                if (newState.IsButtonDown(btn) && oldState.IsButtonDown(btn)) ret.Add(btn);
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// Called after you check if a control has been pressed. Gets related action for further logic.
+        /// </summary>
+        /// <param name="ctrl"></param>
+        /// <returns></returns>
+        public List<string> GetControlPressed(Enum ctrl)
+        {
+            reverseMap.TryGetValue(ctrl, out List<string> ret);
             return ret;
         }
     }
