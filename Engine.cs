@@ -80,9 +80,9 @@ namespace Snowball
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
+            CurrentScreen.Draw(gameTime, spriteBatch, font);//Tell the Current Screen to Draw.
             spriteBatch.End();
             // TODO: Add your drawing code here
-            CurrentScreen.Draw(gameTime, spriteBatch, font);//Tell the Current Screen to Draw.
 
             base.Draw(gameTime);
         }
