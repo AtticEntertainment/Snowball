@@ -82,6 +82,12 @@ namespace Snowball
             }
         }
 
+        /// <summary>
+        /// Check which buttons were just pressed.
+        /// </summary>
+        /// <param name="oldState"></param>
+        /// <param name="newState"></param>
+        /// <returns></returns>
         public List<Buttons> CheckButtonsPressed(GamePadState oldState, GamePadState newState)
         {
             List<Buttons> ret = new List<Buttons>();
@@ -94,6 +100,12 @@ namespace Snowball
             return ret;
         }
 
+        /// <summary>
+        /// Check which buttons were just released.
+        /// </summary>
+        /// <param name="oldState"></param>
+        /// <param name="newState"></param>
+        /// <returns></returns>
         public List<Buttons> CheckButtonsReleased(GamePadState oldState, GamePadState newState)
         {
             List<Buttons> ret = new List<Buttons>();
@@ -103,6 +115,22 @@ namespace Snowball
                     ret.Add(btn);
             }
 
+            return ret;
+        }
+
+        /// <summary>
+        /// Check which buttons are being held.
+        /// </summary>
+        /// <param name="oldState"></param>
+        /// <param name="newState"></param>
+        /// <returns></returns>
+        public List<Buttons> CheckButtonsHeld(GamePadState oldState, GamePadState newState)
+        {
+            List<Buttons> ret = new List<Buttons>();
+            foreach(Buttons btn in reverseMap.Keys)
+            {
+                if (newState.IsButtonDown(btn) && oldState.IsButtonDown(btn)) ret.Add(btn);
+            }
             return ret;
         }
 
@@ -181,6 +209,12 @@ namespace Snowball
             }
         }
 
+        /// <summary>
+        /// Check which keys were just pressed.
+        /// </summary>
+        /// <param name="oldState"></param>
+        /// <param name="newState"></param>
+        /// <returns></returns>
         public List<Keys> CheckKeysPressed(KeyboardState oldState, KeyboardState newState)
         {
             List<Keys> ret = new List<Keys>();
@@ -193,6 +227,12 @@ namespace Snowball
             return ret;
         }
 
+        /// <summary>
+        /// Check which keys were just released.
+        /// </summary>
+        /// <param name="oldState"></param>
+        /// <param name="newState"></param>
+        /// <returns></returns>
         public List<Keys> CheckKeysReleased(KeyboardState oldState, KeyboardState newState)
         {
             List<Keys> ret = new List<Keys>();
@@ -202,6 +242,22 @@ namespace Snowball
                     ret.Add(key);
             }
 
+            return ret;
+        }
+
+        /// <summary>
+        /// Check which keys are being held.
+        /// </summary>
+        /// <param name="oldState"></param>
+        /// <param name="newState"></param>
+        /// <returns></returns>
+        public List<Keys> CheckKeysHeld(KeyboardState oldState, KeyboardState newState)
+        {
+            List<Keys> ret = new List<Keys>();
+            foreach(Keys key in reverseMap.Keys)
+            {
+                if (newState.IsKeyDown(key) && oldState.IsKeyDown(key)) ret.Add(key);
+            }
             return ret;
         }
 
