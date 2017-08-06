@@ -4,6 +4,7 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/Eric/Documents/Visual Studio 2017/Projects/Snowball/Snowball/Content/Images/Credits/GamerGraceLogo.png</File>
+    <File>C:/Users/Elias.Stacy-PC/Documents/GitHub/Snowball/Content/Images/Credits/GamerGraceLogo.png</File>
+    <File>C:/Users/Elias.Stacy-PC/Documents/GitHub/Snowball/Content/Fonts/Font1.spritefont</File>
   </SourceFiles>
 </SourceFileCollection>
