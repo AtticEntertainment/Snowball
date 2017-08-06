@@ -12,12 +12,22 @@ namespace Snowball
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Texture2D logo;
+        private SpriteFont font;
+        public static int Width;
+        public static int Height;
+        private static Engine _eng;
 
-
-        public Engine()
+        private Engine()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+        }
+
+        public static Engine GetInstance()
+        {
+            if (_eng == null)
+                _eng = new Engine();
+            return _eng;
         }
 
         /// <summary>
@@ -42,7 +52,9 @@ namespace Snowball
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // pc = Content.Load<Texture2D>("Images/Pc/..."); will load player character sprite when obtained
-
+            font = Content.Load<SpriteFont>("Fonts/Font1");
+            Width = graphics.PreferredBackBufferWidth;
+            Height = graphics.PreferredBackBufferHeight;
             // TODO: use this.Content to load your game content here
         }
 
@@ -66,6 +78,7 @@ namespace Snowball
                 Exit();
 
             // TODO: Add your update logic here
+            CurrentScreen.Update(gameTime);//Tell the Current Screen to Update.
 
             base.Update(gameTime);
         }
@@ -78,6 +91,7 @@ namespace Snowball
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
+            CurrentScreen.Draw(gameTime, spriteBatch, font);//Tell the Current Screen to Draw.
             spriteBatch.End();
             // TODO: Add your drawing code here
 
