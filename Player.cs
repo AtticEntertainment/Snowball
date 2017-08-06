@@ -13,6 +13,7 @@ namespace Snowball
     class Player
     {
 
+        private ActiveAnimation sprite;
 
         //Determine wether or not the player is alive
         public bool IsAlive
@@ -156,7 +157,7 @@ namespace Snowball
                 if ((canJump && IsOnGround) || airTime > 0.0f)
                 {
                     airTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    sprite.PlayAnimation(/*whatever the name of the jump sprite will be*/);
+                    // sprite.PlayAnimation(/*whatever the name of the jump sprite will be*/);
                 }
 
                 //If the player has remaining air time
