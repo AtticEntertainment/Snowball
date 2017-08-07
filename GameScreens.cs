@@ -31,7 +31,7 @@ namespace Snowball
                 _screens.Push(value);
             }
         }
-        public static readonly float Gravity = 9.8f; //TODO: How many pixels is a "meter"?
+        public static readonly float Gravity = 2.45f; //TODO: How many pixels is a "meter"?
     }
 
     public abstract class GameScreen
@@ -67,6 +67,8 @@ namespace Snowball
         private float terminal = 50.0f; //TODO: How fast do you need to be going to accrue fall damage?
         private int fallDamage = 2; //TODO: How much damage do you take from Fall Damage? Could be multiplied if you fell faster.
         private Vector2 loc;
+        private float velocity;
+        private bool jumping;
 
         public PlayScreen() : base() {
             loc = new Vector2(Engine.Width / 2 - 16, Engine.Height / 2 - 16);
@@ -76,6 +78,19 @@ namespace Snowball
         {
             //Console.WriteLine(loc);
             base.Update(gt);
+
+            if (jumping) velocity += Engine.Gravity;
+            loc.Y += velocity;
+
+            if (loc.X < 0) loc.X = 0;
+            else if (loc.X + 32 > Engine.Width) loc.X = Engine.Width-32;
+            if (loc.Y < 0) loc.Y = 0;
+            else if (loc.Y + 32 > Engine.Height)
+            {
+                loc.Y = Engine.Height - 32;
+                jumping = false;
+                velocity = 0f;
+            }
             //throw new NotImplementedException();
         }
 
@@ -92,7 +107,12 @@ namespace Snowball
         {
             foreach(Keys k in ctrlMap.CheckKeysPressed(oldKey, key)) //Check keys just pressed.
             {
-
+                List<String> ky = ctrlMap.GetControlPressed(k);
+                if(ky.Contains("Jump"))
+                {
+                    if (!jumping) velocity -= 30f;
+                    jumping = true;
+                }
             }
 
             foreach(Keys k in ctrlMap.CheckKeysHeld(oldKey, key)) //Check keys being held.

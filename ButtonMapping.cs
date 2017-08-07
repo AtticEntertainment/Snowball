@@ -286,6 +286,7 @@ namespace Snowball
             mapping["Right"] = new List<Enum> { Keys.Right, Keys.D, Buttons.DPadRight, Buttons.LeftThumbstickRight };
             mapping["Confirm"] = new List<Enum> { Keys.Enter, Buttons.A };
             mapping["Cancel"] = new List<Enum> { Keys.Escape, Buttons.B };
+            mapping["Jump"] = new List<Enum> { Keys.Space, Buttons.A };
             CreateReverseMap();
         }
 
