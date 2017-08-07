@@ -450,6 +450,8 @@ namespace Snowball
         public List<string> GetControlPressed(Enum ctrl)
         {
             reverseMap.TryGetValue(ctrl, out List<string> ret);
+            if (ret == null)
+                return new List<string>();
             return ret;
         }
     }

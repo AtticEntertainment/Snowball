@@ -31,7 +31,7 @@ namespace Snowball
                 _screens.Push(value);
             }
         }
-        public static readonly float Gravity = 2.45f; //TODO: How many pixels is a "meter"?
+        public static readonly float Gravity = 1.225f; //TODO: How many pixels is a "meter"?
     }
 
     public abstract class GameScreen
@@ -110,7 +110,7 @@ namespace Snowball
                 List<String> ky = ctrlMap.GetControlPressed(k);
                 if(ky.Contains("Jump"))
                 {
-                    if (!jumping) velocity -= 30f;
+                    if (!jumping) velocity -= 22.5f;
                     jumping = true;
                 }
             }
@@ -148,17 +148,30 @@ namespace Snowball
         {
             foreach(Buttons b in ctrlMap.CheckButtonsPressed(oldPad, pad)) //Check buttons just pressed.
             {
-
+                List<string> ky = ctrlMap.GetControlPressed(b);
+                if(ky.Contains("Jump"))
+                {
+                    if (!jumping) velocity -= 22.5f;
+                    jumping = true;
+                }
             }
 
             foreach(Buttons b in ctrlMap.CheckButtonsHeld(oldPad, pad)) //Check buttons being held.
             {
-
+                List<string> ky = ctrlMap.GetControlPressed(b);
+                if (ky.Contains("Up")) loc.Y--;
+                else if (ky.Contains("Down")) loc.Y++;
+                else if (ky.Contains("Left")) loc.X--;
+                else if (ky.Contains("Right")) loc.X++;
             }
 
             foreach(Buttons b in ctrlMap.CheckButtonsReleased(oldPad, pad)) //Check buttons just released.
             {
-
+                List<string> ky = ctrlMap.GetControlPressed(b);
+                if (ky.Contains("Up")) loc.Y--;
+                else if (ky.Contains("Down")) loc.Y++;
+                else if (ky.Contains("Left")) loc.X--;
+                else if (ky.Contains("Right")) loc.X++;
             }
 
             oldPad = pad;
